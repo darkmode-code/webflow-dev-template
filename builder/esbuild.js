@@ -26,7 +26,8 @@ if (IS_PROD) {
   context.dispose();
 }
 else {
-  console.log('dev')
+  console.log(`Dev Mode on \x1b[36m${SERVE_ORIGIN}/index.js\x1b[0m`);
+  console.log(`Write in Webflow: \x1b[32m<script src=\x1b[36m"${SERVE_ORIGIN}/index.js"\x1b[32m></script>\x1b[0m`);
   await context.watch();
   await context
     .serve({

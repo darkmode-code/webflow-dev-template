@@ -22,8 +22,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@changesets/changelog-git": "^0.2.0",
-    "@changesets/cli": "^2.27.7",
     "@eslint/js": "^9.6.0",
     "@finsweet/ts-utils": "^0.40.0",
     "@types/eslint__js": "^8.42.3",

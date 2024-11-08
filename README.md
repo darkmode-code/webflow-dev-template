@@ -1,7 +1,7 @@
 # Webflow Dev Template
 
-A template for starting all your Webflow projects requiring code.
-It looks like the one of [finsweet](https://github.com/finsweet/developer-starter) but it's easily customizable.
+A template for starting all your Webflow projects requiring code using Typescript.
+It looks like the one of [finsweet](https://github.com/finsweet/developer-starter) but it's easily customizable and the deployement is easier.
 
 ## Requirements
 
@@ -10,21 +10,16 @@ Install pnpm on your computer
 npm i -g pnpm
 ```
 
-Got a npm token (named NPM_TOKEN) : [How to do](https://docs.npmjs.com/creating-and-viewing-access-tokens)
+Got a npm access token : [How to do](https://docs.npmjs.com/creating-and-viewing-access-tokens)
 
 ## Installation
 
 1. Click on Use this template > [Create a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#creating-a-repository-from-a-template)
 2. Change some settings in your repository 
 
-```Settings > Actions > General > Workflow Permissions```
-
-- Read and write permissions.
-- Allow GitHub Actions to create and approve pull requests.
-
 ```Settings > Secrets and variables > Actions > New repository secret ```
 - Name: NPM_TOKEN
-- Secret: you token
+- Secret: you token from npm
 3. Install dependencies
 ```bash
 pnpm install
@@ -55,14 +50,17 @@ Webflow.push(() => {
 
 ## Deployment
 
+Commit all your work
+
+Then write :
 ```bash
-pnpm changeset
+pnpm release
 ```
-Then push your code,
+Choose between Major, Minor or Patch and write a commit message for the deployment
 
-In GitHub, when CI/CD is finished, you will have a pull request, merge it and you're done!
+Push your code,
 
-Your package will appear in npm.
+When CI/CD is finished in Github, your package will appear in npm.
 
 ## Tools
 
@@ -73,6 +71,8 @@ The advantage of this template is you can easily change each tool to suit your c
 Finsweet did a HUGE work by typing the Webflow.js file included in all Webflow projects.
 
 With this, you can access many types and methods not provided by Webflow.
+
+[ts-utils documentation](https://finsweet.com/open-source/ts-utils/)
 
 ### ESBuild
 
@@ -106,22 +106,15 @@ A tool that enables Git hook scripts to run automatically, helping to enforce qu
 
 Add hooks in .husky folder
 
-### Changeset (versioning)
+### bump-version.js (versioning)
 
-A tool for managing and automating the versioning and changelog generation process for projects, especially those using monorepos, by tracking changes across packages.
+A script for managing and automating versioning.
 
-Update .changeset/config.json
+Update builder/bump-version.js
 
 ### CI/CD
 
 This pipeline uses GitHub Actions
-
-#### Lint
-
-Check if your code got errors before going to production
-
-Update .github/workflows.ci.yml
-
 
 #### Release
 

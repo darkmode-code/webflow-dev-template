@@ -1,65 +1,48 @@
-name: Release
+name: Publish GitHub Package
 
 on:
   push:
     branches:
       - master
       - main
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+    paths:
+      - '**/*'
 
 jobs:
-  release:
-    name: Release
+  publish-package:
+    if: contains(github.event.head_commit.message, 'publish')
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
-      - name: Checkout Repo
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: pnpm
+          registry-url: https://registry.npmjs.org/
+          scope: "@darkmode-code"
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Project
+      - name: Build the package
         run: pnpm build
 
-      - name: Check for required tokens
-        run: |
-          if [ -z "${{ secrets.GITHUB_TOKEN }}" ]; then
-            echo "GITHUB_TOKEN is not set"
-            exit 1
-          fi
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "NPM_TOKEN is not set"
-            exit 1
-          fi
-
-      - name: Create .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
+      - name: Publish to npm
+        run: pnpm publish --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-
-      - name: Create Release Pull Request and Publish to npm
-        id: changesets-production
-        uses: changesets/action@v1
-        with:
-          publish: pnpm release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

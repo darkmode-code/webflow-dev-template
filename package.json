@@ -34,6 +34,7 @@
     "globals": "^15.8.0",
     "husky": "^9.0.11",
     "prettier": "3.3.2",
+    "prompts": "^2.4.2",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.15.0"
   },
